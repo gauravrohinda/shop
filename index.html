@@ -248,13 +248,12 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, getDocs, deleteDoc, query, where, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
         // --- Firebase Configuration & Initialization ---
         setLogLevel('debug');
         
-        // Firebase configuration provided by the user
         const firebaseConfig = {
           apiKey: "AIzaSyC3MlcEuERopJt0AXVN2ZenfRcUWyXTGrY",
           authDomain: "gaurav-8121e.firebaseapp.com",
@@ -437,12 +436,10 @@
         // --- Firebase Functions ---
         async function initFirebase() {
             try {
-                // Initialize Firebase with the provided configuration
                 app = initializeApp(firebaseConfig);
                 auth = getAuth(app); 
                 db = getFirestore(app);
                 
-                // Listen for auth state changes
                 onAuthStateChanged(auth, (user) => {
                     isAuthReady = true; 
                     document.getElementById('auth-button').disabled = false;
@@ -457,22 +454,20 @@
                     } else {
                         userId = null;
                         console.log("User is signed out.");
-                        // Unsubscribe from the cart listener when the user logs out
                         if (cartListenerUnsubscribe) {
                             cartListenerUnsubscribe();
                             cartListenerUnsubscribe = null;
-                            cart = []; // Clear the cart on logout
+                            cart = []; 
                             updateCartUI();
                         }
                         updateUIForAuthState(null);
                     }
                 });
-
-                // Sign in anonymously on initial load for a seamless guest experience
+        
                 if (!auth.currentUser) {
                     await signInAnonymously(auth);
                 }
-
+        
             } catch (error) {
                 console.error("Firebase Initialization Error:", error);
                 isAuthReady = true;
@@ -483,10 +478,8 @@
         }
         
         async function loadCartFromFirestore() {
-            // Only attempt to load cart if a user is authenticated
             if (!db || !userId) return;
 
-            // Unsubscribe from any previous listener before setting up a new one
             if (cartListenerUnsubscribe) {
                 cartListenerUnsubscribe();
             }
@@ -499,7 +492,8 @@
                 updateCartUI();
             });
         }
-        
+
+        // The corrected and fixed addProductToCart function
         async function addProductToCart(product) {
             if (!isAuthReady) {
                 showMessage("Please wait, Firebase is still initializing.");
@@ -510,13 +504,18 @@
                 showModal(authModal);
                 return;
             }
-            const cartCollectionRef = collection(db, `/artifacts/${firebaseConfig.appId}/users/${userId}/cart`);
-            const itemInCart = cart.find(item => item.productId === product.id);
-        
+
+            const cartCollectionRef = collection(db, `artifacts/${firebaseConfig.appId}/users/${userId}/cart`);
+            const q = query(cartCollectionRef, where("productId", "==", product.id));
+
             try {
-                if (itemInCart) {
-                    const itemDocRef = doc(db, `/artifacts/${firebaseConfig.appId}/users/${userId}/cart/${itemInCart.id}`);
-                    await setDoc(itemDocRef, { quantity: itemInCart.quantity + 1 }, { merge: true });
+                const querySnapshot = await getDocs(q);
+                if (!querySnapshot.empty) {
+                    const itemDoc = querySnapshot.docs[0];
+                    await updateDoc(itemDoc.ref, {
+                        quantity: increment(1)
+                    });
+                    showMessage(`${product.name} quantity updated!`);
                 } else {
                     await addDoc(cartCollectionRef, {
                         productId: product.id,
@@ -525,14 +524,14 @@
                         imageUrl: product.imageUrl,
                         quantity: 1
                     });
+                    showMessage(`${product.name} added to cart!`);
                 }
-                showMessage(`${product.name} added to cart!`);
             } catch (e) {
-                console.error("Error adding document: ", e);
+                console.error("Error adding/updating document: ", e);
                 showMessage("Error adding item to cart. Please try again.");
             }
         }
-        
+
         async function placeOrder() {
             if (!isAuthReady) {
                 showMessage("Please wait, Firebase is still initializing.");
