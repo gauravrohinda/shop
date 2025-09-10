@@ -119,10 +119,8 @@
 </head>
 <body>
 
-    <!-- Main Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-            <!-- Logo -->
             <div class="flex items-center space-x-2">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="#34495e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -132,10 +130,9 @@
                 <h1 class="text-3xl font-bold logo-text">Gaurav Saree Center</h1>
             </div>
             
-            <!-- User Info and Actions -->
             <div class="flex items-center space-x-4">
                 <span id="user-id-display" class="hidden text-sm text-gray-500 font-medium"></span>
-                <button id="auth-button" class="bg-purple-600 text-white px-4 py-2 rounded-full font-medium hover:bg-purple-700 transition-colors">Login</button>
+                <button id="auth-button" class="bg-purple-600 text-white px-4 py-2 rounded-full font-medium hover:bg-purple-700 transition-colors" disabled>Login</button>
                 <div class="relative">
                     <button id="cart-icon" class="text-gray-600 hover:text-gray-800 transition-colors">
                         <i class="fas fa-shopping-cart text-2xl"></i>
@@ -146,9 +143,7 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
-        <!-- Search and Filter Section -->
         <div class="flex flex-col md:flex-row items-center justify-between mb-8 space-y-4 md:space-y-0">
             <input type="text" id="search-input" placeholder="Search for sarees..." class="w-full md:w-1/3 px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-600 transition-all">
             <div class="flex flex-wrap justify-center space-x-2 md:space-x-4">
@@ -160,13 +155,10 @@
             </div>
         </div>
 
-        <!-- Product Grid -->
         <section id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Products will be dynamically loaded here -->
         </section>
     </main>
 
-    <!-- Cart Modal -->
     <div id="cart-modal" class="modal">
         <div class="modal-content">
             <div class="flex items-center justify-between pb-4 border-b">
@@ -176,7 +168,6 @@
                 </button>
             </div>
             <div id="cart-items" class="mt-4 space-y-4">
-                <!-- Cart items will be loaded here -->
             </div>
             <div id="empty-cart-message" class="hidden text-center text-gray-500 py-8">
                 <i class="fas fa-box-open text-6xl mb-4"></i>
@@ -194,17 +185,16 @@
         </div>
     </div>
 
-    <!-- Auth Modal -->
     <div id="auth-modal" class="modal">
         <div class="modal-content max-w-sm text-center">
             <h3 class="text-3xl font-bold text-gray-800 mb-6">Login</h3>
             <p class="text-gray-600 mb-6">Login to save your cart and place orders.</p>
-            <button id="google-login-btn" class="w-full bg-blue-600 text-white px-6 py-3 rounded-full font-bold flex items-center justify-center space-x-2 hover:bg-blue-700 transition-colors">
+            <button id="google-login-btn" class="w-full bg-blue-600 text-white px-6 py-3 rounded-full font-bold flex items-center justify-center space-x-2 hover:bg-blue-700 transition-colors" disabled>
                 <i class="fab fa-google"></i>
                 <span>Sign in with Google</span>
             </button>
             <div class="my-4 text-gray-500 font-medium">OR</div>
-            <button id="guest-login-btn" class="w-full bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-bold hover:bg-gray-300 transition-colors">
+            <button id="guest-login-btn" class="w-full bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-bold hover:bg-gray-300 transition-colors" disabled>
                 Continue as Guest
             </button>
             <button id="close-auth-modal" class="w-full mt-4 bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-medium hover:bg-gray-300 transition-colors">
@@ -213,7 +203,6 @@
         </div>
     </div>
 
-    <!-- AI Chat Bot UI -->
     <button id="ai-chat-toggle" class="ai-chat-btn">
         <i class="fas fa-comment-dots text-2xl"></i>
     </button>
@@ -235,563 +224,553 @@
             </button>
         </div>
     </div>
-
-<!-- Firebase SDK and custom script -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // Global variables provided by the Canvas environment
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { /* Your default firebase config here */ };
-    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-    setLogLevel('debug');
-
-    let app;
-    let auth;
-    let db;
-    let userId = null;
-
-    window.firebase = {
-        app: null,
-        auth: null,
-        db: null,
-        userId: null,
-        init: async function() {
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyCglX9xXwd9zJ4t2Z6NU6XE8-Zn8WzyLXg",
+            authDomain: "gauravsaree-3e649.firebaseapp.com",
+            projectId: "gauravsaree-3e649",
+            storageBucket: "gauravsaree-3e649.firebasestorage.app",
+            messagingSenderId: "837564164154",
+            appId: "1:837564164154:web:49c81f867d30b11bc3ad03",
+            measurementId: "G-JTLSQ4SXBK"
+        };
+        
+        setLogLevel('debug');
+        
+        // --- Global State ---
+        let app;
+        let db;
+        let auth;
+        let userId = null;
+        let isAuthReady = false; 
+        let cart = [];
+        const products = [
+            { id: 1, name: 'Traditional Kanjeevaram Saree', price: 5499, imageUrl: 'https://placehold.co/400x500/9b59b6/ffffff?text=Kanjeevaram+Saree', category: 'silk', description: 'A classic silk saree with intricate gold zari work.' },
+            { id: 2, name: 'Soft Cotton Handloom Saree', price: 2199, imageUrl: 'https://placehold.co/400x500/e74c3c/ffffff?text=Cotton+Saree', category: 'cotton', description: 'Lightweight and comfortable, perfect for everyday wear.' },
+            { id: 3, name: 'Georgette Floral Saree', price: 3899, imageUrl: 'https://placehold.co/400x500/3498db/ffffff?text=Georgette+Saree', category: 'georgette', description: 'A flowing saree with a beautiful floral print design.' },
+            { id: 4, name: 'Chiffon Party Wear Saree', price: 4299, imageUrl: 'https://placehold.co/400x500/2ecc71/ffffff?text=Chiffon+Saree', category: 'chiffon', description: 'Sparkling and elegant, ideal for evening events.' },
+            { id: 5, name: 'Banarasi Brocade Saree', price: 7899, imageUrl: 'https://placehold.co/400x500/f39c12/ffffff?text=Banarasi+Saree', category: 'silk', description: 'A masterpiece of weaving from Varanasi, rich and heavy.' },
+            { id: 6, name: 'Pure Linen Saree', price: 2999, imageUrl: 'https://placehold.co/400x500/1abc9c/ffffff?text=Linen+Saree', category: 'cotton', description: 'Simple yet sophisticated, known for its breathable fabric.' },
+            { id: 7, name: 'Embroidered Net Saree', price: 5999, imageUrl: 'https://placehold.co/400x500/95a5a6/ffffff?text=Net+Saree', category: 'georgette', description: 'Intricate thread work on a delicate net fabric.' },
+            { id: 8, name: 'Printed Crepe Saree', price: 3199, imageUrl: 'https://placehold.co/400x500/e67e22/ffffff?text=Crepe+Saree', category: 'chiffon', description: 'A contemporary print on a fluid crepe fabric.' },
+        ];
+        
+        // --- DOM Elements ---
+        let productGrid, filterButtons, searchInput, cartCount, cartModal, cartItemsContainer, cartTotalDisplay, authButton, authModal, closeAuthModalBtn, googleLoginBtn, guestLoginBtn, userIdDisplay, aiChatToggleBtn, aiChatContainer, closeChatBtn, chatInput, chatSendBtn, chatMessagesContainer;
+        
+        // --- Initialization and Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get DOM Elements
+            productGrid = document.getElementById('product-grid');
+            filterButtons = document.querySelectorAll('.filter-btn');
+            searchInput = document.getElementById('search-input');
+            cartCount = document.getElementById('cart-count');
+            cartModal = document.getElementById('cart-modal');
+            cartItemsContainer = document.getElementById('cart-items');
+            cartTotalDisplay = document.getElementById('cart-total');
+            authButton = document.getElementById('auth-button');
+            authModal = document.getElementById('auth-modal');
+            closeAuthModalBtn = document.getElementById('close-auth-modal');
+            googleLoginBtn = document.getElementById('google-login-btn');
+            guestLoginBtn = document.getElementById('guest-login-btn');
+            userIdDisplay = document.getElementById('user-id-display');
+            aiChatToggleBtn = document.getElementById('ai-chat-toggle');
+            aiChatContainer = document.getElementById('ai-chat-container');
+            closeChatBtn = document.getElementById('close-chat-btn');
+            chatInput = document.getElementById('chat-input');
+            chatSendBtn = document.getElementById('chat-send-btn');
+            chatMessagesContainer = document.getElementById('chat-messages');
+        
+            // Initial rendering
+            renderProducts(products);
+            updateCartUI();
+            
+            // Start Firebase initialization
+            initFirebase();
+        
+            // Product filtering
+            function applyFilters() {
+                const activeFilter = document.querySelector('.active-filter')?.dataset.filter;
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredProducts = products.filter(product => {
+                    const matchesCategory = activeFilter === 'all' || product.category === activeFilter;
+                    const matchesSearch = product.name.toLowerCase().includes(searchTerm) || product.description.toLowerCase().includes(searchTerm);
+                    return matchesCategory && matchesSearch;
+                });
+                renderProducts(filteredProducts);
+            }
+        
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelector('.active-filter')?.classList.remove('active-filter', 'bg-gray-100');
+                    button.classList.add('active-filter', 'bg-gray-100');
+                    applyFilters();
+                });
+            });
+        
+            searchInput.addEventListener('input', applyFilters);
+        
+            // Add to cart button
+            productGrid.addEventListener('click', (event) => {
+                const button = event.target.closest('.add-to-cart-btn');
+                if (button) {
+                    const productId = parseInt(button.dataset.productId);
+                    const productToAdd = products.find(p => p.id === productId);
+                    if (productToAdd) {
+                        addProductToCart(productToAdd);
+                    }
+                }
+            });
+        
+            // AI Features Button Listeners
+            productGrid.addEventListener('click', (event) => {
+                const styleBtn = event.target.closest('.style-guide-btn');
+                const storyBtn = event.target.closest('.saree-story-btn');
+                if (styleBtn) {
+                    const productId = parseInt(styleBtn.dataset.productId);
+                    const product = products.find(p => p.id === productId);
+                    if (product) {
+                        generateContent('Style Guide', product);
+                    }
+                }
+                if (storyBtn) {
+                    const productId = parseInt(storyBtn.dataset.productId);
+                    const product = products.find(p => p.id === productId);
+                    if (product) {
+                        generateContent('Story', product);
+                    }
+                }
+            });
+        
+            // Modal controls
+            document.getElementById('cart-icon').addEventListener('click', () => showModal(cartModal));
+            document.getElementById('close-cart-modal').addEventListener('click', () => hideModal(cartModal));
+            document.getElementById('checkout-btn').addEventListener('click', () => {
+                placeOrder();
+                hideModal(cartModal);
+            });
+        
+            // --- AUTHENTICATION BUTTONS ---
+            authButton.addEventListener('click', () => {
+                if (userId) {
+                    signOut(auth);
+                } else {
+                    showModal(authModal);
+                }
+            });
+            closeAuthModalBtn.addEventListener('click', () => hideModal(authModal));
+        
+            googleLoginBtn.addEventListener('click', async () => {
+                if (!isAuthReady) {
+                    showMessage("Please wait, Firebase is still initializing.");
+                    return;
+                }
+                const provider = new GoogleAuthProvider();
+                try {
+                    await signInWithPopup(auth, provider); 
+                    hideModal(authModal);
+                    showMessage("Signed in with Google!");
+                } catch (error) {
+                    console.error("Google login failed:", error);
+                    showMessage("Google login failed. Please try again.");
+                }
+            });
+        
+            guestLoginBtn.addEventListener('click', async () => {
+                if (!isAuthReady) {
+                    showMessage("Please wait, Firebase is still initializing.");
+                    return;
+                }
+                try {
+                    await signInAnonymously(auth); 
+                    hideModal(authModal);
+                    showMessage("Signed in as Guest!");
+                } catch (error) {
+                    console.error("Guest login failed:", error);
+                    showMessage("Guest login failed. Please try again.");
+                }
+            });
+        
+            // AI Chat Bot functionality
+            aiChatToggleBtn.addEventListener('click', () => {
+                aiChatContainer.classList.toggle('active');
+            });
+            closeChatBtn.addEventListener('click', () => {
+                aiChatContainer.classList.remove('active');
+            });
+        
+            chatSendBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+        
+        // --- Firebase Functions ---
+        async function initFirebase() {
             try {
-                // Initialize Firebase
                 app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
+                auth = getAuth(app); 
                 db = getFirestore(app);
-
+        
                 // Listen for auth state changes
                 onAuthStateChanged(auth, async (user) => {
+                    isAuthReady = true; 
+                    document.getElementById('auth-button').disabled = false;
+                    document.getElementById('google-login-btn').disabled = false;
+                    document.getElementById('guest-login-btn').disabled = false;
+        
                     if (user) {
                         userId = user.uid;
                         console.log("User is authenticated with UID:", userId);
-                        window.firebase.userId = userId;
                         updateUIForAuthState(user);
-                        // Load cart and orders from Firestore
                         loadCartFromFirestore();
                     } else {
                         userId = null;
                         console.log("User is signed out.");
-                        window.firebase.userId = null;
                         updateUIForAuthState(null);
                     }
                 });
-
-                window.firebase.app = app;
-                window.firebase.auth = auth;
-                window.firebase.db = db;
-                
-                // Sign in with the provided custom token
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                }
             } catch (error) {
                 console.error("Firebase Initialization Error:", error);
-            }
-        },
-        signOut: async function() {
-            try {
-                await signOut(auth);
-                console.log("User signed out successfully.");
-            } catch (error) {
-                console.error("Error signing out:", error);
+                isAuthReady = true;
+                document.getElementById('auth-button').disabled = false;
+                document.getElementById('google-login-btn').disabled = false;
+                document.getElementById('guest-login-btn').disabled = false;
             }
         }
-    };
-
-    function updateUIForAuthState(user) {
-        const authButton = document.getElementById('auth-button');
-        const userIdDisplay = document.getElementById('user-id-display');
-
-        if (user) {
-            authButton.textContent = 'Logout';
-            authButton.classList.remove('bg-purple-600');
-            authButton.classList.add('bg-red-600');
-
-            if (user.isAnonymous) {
-                userIdDisplay.textContent = `Hello, Guest`;
-            } else if (user.displayName) {
-                userIdDisplay.textContent = `Hello, ${user.displayName}`;
-            } else if (user.email) {
-                userIdDisplay.textContent = `Hello, ${user.email}`;
-            } else {
-                userIdDisplay.textContent = `User ID: ${user.uid}`;
-            }
-            userIdDisplay.classList.remove('hidden');
-        } else {
-            authButton.textContent = 'Login';
-            authButton.classList.remove('bg-red-600');
-            authButton.classList.add('bg-purple-600');
-            userIdDisplay.classList.add('hidden');
-        }
-    }
-
-    async function loadCartFromFirestore() {
-        if (!window.firebase.db || !window.firebase.userId) return;
-        const cartCollectionRef = collection(window.firebase.db, `artifacts/${appId}/users/${window.firebase.userId}/cart`);
-        onSnapshot(cartCollectionRef, (snapshot) => {
-            cart = [];
-            snapshot.forEach(doc => {
-                cart.push({ id: doc.id, ...doc.data() });
+        
+        async function loadCartFromFirestore() {
+            if (!db || !userId) return;
+            const cartCollectionRef = collection(db, `users/${userId}/cart`);
+            onSnapshot(cartCollectionRef, (snapshot) => {
+                cart = [];
+                snapshot.forEach(doc => {
+                    cart.push({ id: doc.id, ...doc.data() });
+                });
+                updateCartUI();
             });
-            updateCartUI();
-        });
-    }
-
-    async function addProductToCart(product) {
-        if (!window.firebase.db || !window.firebase.userId) {
-            showMessage("Please login to add items to your cart.");
-            showModal(authModal);
-            return;
         }
-        const cartCollectionRef = collection(window.firebase.db, `artifacts/${appId}/users/${window.firebase.userId}/cart`);
-        const itemInCart = cart.find(item => item.productId === product.id);
-
-        try {
-            if (itemInCart) {
-                const itemDocRef = doc(window.firebase.db, `artifacts/${appId}/users/${window.firebase.userId}/cart/${itemInCart.id}`);
-                await setDoc(itemDocRef, { quantity: itemInCart.quantity + 1 }, { merge: true });
+        
+        async function addProductToCart(product) {
+            if (!isAuthReady) {
+                showMessage("Please wait, Firebase is still initializing.");
+                return;
+            }
+            if (!db || !userId) {
+                showMessage("Please login to add items to your cart.");
+                showModal(authModal);
+                return;
+            }
+            const cartCollectionRef = collection(db, `users/${userId}/cart`);
+            const itemInCart = cart.find(item => item.productId === product.id);
+        
+            try {
+                if (itemInCart) {
+                    const itemDocRef = doc(db, `users/${userId}/cart/${itemInCart.id}`);
+                    await setDoc(itemDocRef, { quantity: itemInCart.quantity + 1 }, { merge: true });
+                } else {
+                    await addDoc(cartCollectionRef, {
+                        productId: product.id,
+                        name: product.name,
+                        price: product.price,
+                        imageUrl: product.imageUrl,
+                        quantity: 1
+                    });
+                }
+                showMessage(`${product.name} added to cart!`);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                showMessage("Error adding item to cart. Please try again.");
+            }
+        }
+        
+        async function placeOrder() {
+            if (!isAuthReady) {
+                showMessage("Please wait, Firebase is still initializing.");
+                return;
+            }
+            if (!db || !userId || cart.length === 0) {
+                showMessage("Your cart is empty or you are not logged in.");
+                return;
+            }
+        
+            const ordersCollectionRef = collection(db, `users/${userId}/orders`);
+        
+            const orderDetails = {
+                items: cart,
+                totalPrice: cart.reduce((total, item) => total + (item.price * item.quantity), 0),
+                orderDate: new Date().toISOString(),
+                status: "Pending"
+            };
+        
+            try {
+                await addDoc(ordersCollectionRef, orderDetails);
+                showMessage("Order placed successfully! Thank you for your purchase.");
+                
+                const cartCollectionRef = collection(db, `users/${userId}/cart`);
+                const cartDocs = await getDocs(cartCollectionRef);
+                cartDocs.forEach(async (cartDoc) => {
+                    await deleteDoc(doc(cartCollectionRef, cartDoc.id));
+                });
+            } catch (e) {
+                console.error("Error placing order: ", e);
+                showMessage("Error placing order. Please try again.");
+            }
+        }
+        
+        // --- UI & Utility Functions ---
+        function updateUIForAuthState(user) {
+            const authButton = document.getElementById('auth-button');
+            const userIdDisplay = document.getElementById('user-id-display');
+        
+            if (user) {
+                authButton.textContent = 'Logout';
+                authButton.classList.remove('bg-purple-600');
+                authButton.classList.add('bg-red-600');
+        
+                if (user.isAnonymous) {
+                    userIdDisplay.textContent = `Hello, Guest`;
+                } else if (user.displayName) {
+                    userIdDisplay.textContent = `Hello, ${user.displayName}`;
+                } else if (user.email) {
+                    userIdDisplay.textContent = `Hello, ${user.email}`;
+                } else {
+                    userIdDisplay.textContent = `User ID: ${user.uid}`;
+                }
+                userIdDisplay.classList.remove('hidden');
             } else {
-                await addDoc(cartCollectionRef, {
-                    productId: product.id,
-                    name: product.name,
-                    price: product.price,
-                    imageUrl: product.imageUrl,
-                    quantity: 1
+                authButton.textContent = 'Login';
+                authButton.classList.remove('bg-red-600');
+                authButton.classList.add('bg-purple-600');
+                userIdDisplay.classList.add('hidden');
+            }
+        }
+        
+        function renderProducts(filteredProducts) {
+            const productGrid = document.getElementById('product-grid');
+            productGrid.innerHTML = '';
+            if (filteredProducts.length === 0) {
+                productGrid.innerHTML = `<p class="text-center text-gray-500 col-span-full">No products found for this category.</p>`;
+                return;
+            }
+            filteredProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card', 'bg-white', 'rounded-xl', 'shadow-md', 'overflow-hidden');
+                productCard.innerHTML = `
+                    <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-72 object-cover">
+                    <div class="p-5">
+                        <h4 class="text-lg font-semibold text-gray-800">${product.name}</h4>
+                        <p class="text-gray-500 text-sm mt-1">${product.description}</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-xl font-bold text-gray-900">${formatPrice(product.price)}</span>
+                            <button class="add-to-cart-btn bg-purple-600 text-white px-4 py-2 rounded-full font-medium hover:bg-purple-700 transition-colors" data-product-id="${product.id}">
+                                Add to Cart
+                            </button>
+                        </div>
+                        <div class="mt-4 flex flex-col space-y-2">
+                            <button class="ai-btn style-guide-btn bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-600 transition-colors" data-product-id="${product.id}">
+                                ✨ Saree Style Guide
+                            </button>
+                            <button class="ai-btn saree-story-btn bg-pink-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-pink-600 transition-colors" data-product-id="${product.id}">
+                                ✨ Saree Story
+                            </button>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(productCard);
+            });
+        }
+        
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalDisplay = document.getElementById('cart-total');
+            const cartCount = document.getElementById('cart-count');
+        
+            cartItemsContainer.innerHTML = '';
+            if (cart.length === 0) {
+                document.getElementById('empty-cart-message').classList.remove('hidden');
+                document.getElementById('cart-summary').classList.add('hidden');
+            } else {
+                document.getElementById('empty-cart-message').classList.add('hidden');
+                document.getElementById('cart-summary').classList.remove('hidden');
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('flex', 'items-center', 'space-x-4', 'p-4', 'bg-gray-50', 'rounded-lg');
+                    itemElement.innerHTML = `
+                        <img src="${item.imageUrl}" alt="${item.name}" class="w-20 h-20 rounded-lg object-cover">
+                        <div class="flex-grow">
+                            <p class="font-medium text-gray-800">${item.name}</p>
+                            <p class="text-sm text-gray-500">Quantity: ${item.quantity}</p>
+                        </div>
+                        <span class="font-semibold">${formatPrice(item.price * item.quantity)}</span>
+                    `;
+                    cartItemsContainer.appendChild(itemElement);
                 });
             }
-            showMessage(`${product.name} added to cart!`);
-        } catch (e) {
-            console.error("Error adding document: ", e);
-            showMessage("Error adding item to cart. Please try again.");
+            const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartTotalDisplay.textContent = formatPrice(cart.reduce((total, item) => total + (item.price * item.quantity), 0));
+            cartCount.textContent = total;
         }
-    }
-
-    async function placeOrder() {
-        if (!window.firebase.db || !window.firebase.userId || cart.length === 0) {
-            showMessage("Your cart is empty or you are not logged in.");
-            return;
+        
+        function formatPrice(price) {
+            return `₹${price.toLocaleString('en-IN')}`;
         }
-
-        const ordersCollectionRef = collection(window.firebase.db, `artifacts/${appId}/users/${window.firebase.userId}/orders`);
-
-        const orderDetails = {
-            items: cart,
-            totalPrice: cart.reduce((total, item) => total + (item.price * item.quantity), 0),
-            orderDate: new Date().toISOString(),
-            status: "Pending"
-        };
-
-        try {
-            await addDoc(ordersCollectionRef, orderDetails);
-            showMessage("Order placed successfully! Thank you for your purchase.");
-            
-            // Clear the cart
-            const cartCollectionRef = collection(window.firebase.db, `artifacts/${appId}/users/${window.firebase.userId}/cart`);
-            const cartDocs = await getDocs(cartCollectionRef);
-            cartDocs.forEach(async (cartDoc) => {
-                await deleteDoc(doc(cartCollectionRef, cartDoc.id));
-            });
-        } catch (e) {
-            console.error("Error placing order: ", e);
-            showMessage("Error placing order. Please try again.");
+        
+        function showModal(modal) {
+            modal.style.display = 'block';
+            document.body.classList.add('overflow-hidden');
         }
-    }
-
-    // --- Utility Functions ---
-    function formatPrice(price) {
-        return `₹${price.toLocaleString('en-IN')}`;
-    }
-
-    function showModal(modal) {
-        modal.style.display = 'block';
-        document.body.classList.add('overflow-hidden');
-    }
-
-    function hideModal(modal) {
-        modal.style.display = 'none';
-        document.body.classList.remove('overflow-hidden');
-    }
-
-    // --- UI Update & Rendering Functions ---
-    function renderProducts(filteredProducts) {
-        const productGrid = document.getElementById('product-grid');
-        productGrid.innerHTML = '';
-        if (filteredProducts.length === 0) {
-            productGrid.innerHTML = `<p class="text-center text-gray-500 col-span-full">No products found for this category.</p>`;
-            return;
+        
+        function hideModal(modal) {
+            modal.style.display = 'none';
+            document.body.classList.remove('overflow-hidden');
         }
-        filteredProducts.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.classList.add('product-card', 'bg-white', 'rounded-xl', 'shadow-md', 'overflow-hidden');
-            productCard.innerHTML = `
-                <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-72 object-cover">
-                <div class="p-5">
-                    <h4 class="text-lg font-semibold text-gray-800">${product.name}</h4>
-                    <p class="text-gray-500 text-sm mt-1">${product.description}</p>
-                    <div class="flex items-center justify-between mt-4">
-                        <span class="text-xl font-bold text-gray-900">${formatPrice(product.price)}</span>
-                        <button class="add-to-cart-btn bg-purple-600 text-white px-4 py-2 rounded-full font-medium hover:bg-purple-700 transition-colors" data-product-id="${product.id}">
-                            Add to Cart
-                        </button>
+        
+        // --- AI Chat and LLM Functions ---
+        // New generic modal for LLM responses
+        const llmModal = document.createElement('div');
+        llmModal.id = 'llm-modal';
+        llmModal.className = 'modal';
+        llmModal.innerHTML = `
+            <div class="modal-content relative w-full md:w-2/3 lg:w-1/2">
+                <button id="close-llm-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h4 id="llm-modal-title" class="text-2xl font-bold text-center text-gray-800 mb-6"></h4>
+                <div id="llm-content" class="text-gray-700">
                     </div>
-                    <div class="mt-4 flex flex-col space-y-2">
-                        <button class="ai-btn style-guide-btn bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-600 transition-colors" data-product-id="${product.id}">
-                            ✨ Saree Style Guide
-                        </button>
-                        <button class="ai-btn saree-story-btn bg-pink-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-pink-600 transition-colors" data-product-id="${product.id}">
-                            ✨ Saree Story
-                        </button>
-                    </div>
+                <div id="llm-loader" class="hidden text-center mt-4">
+                    <i class="fas fa-spinner fa-spin text-4xl text-purple-600"></i>
+                    <p class="mt-2 text-gray-500">Generating content...</p>
                 </div>
-            `;
-            productGrid.appendChild(productCard);
-        });
-    }
-
-    function updateCartUI() {
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartTotalDisplay = document.getElementById('cart-total');
-        const cartCount = document.getElementById('cart-count');
-
-        cartItemsContainer.innerHTML = '';
-        if (cart.length === 0) {
-            document.getElementById('empty-cart-message').classList.remove('hidden');
-            document.getElementById('cart-summary').classList.add('hidden');
-        } else {
-            document.getElementById('empty-cart-message').classList.add('hidden');
-            document.getElementById('cart-summary').classList.remove('hidden');
-            cart.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.classList.add('flex', 'items-center', 'space-x-4', 'p-4', 'bg-gray-50', 'rounded-lg');
-                itemElement.innerHTML = `
-                    <img src="${item.imageUrl}" alt="${item.name}" class="w-20 h-20 rounded-lg object-cover">
-                    <div class="flex-grow">
-                        <p class="font-medium text-gray-800">${item.name}</p>
-                        <p class="text-sm text-gray-500">Quantity: ${item.quantity}</p>
-                    </div>
-                    <span class="font-semibold">${formatPrice(item.price * item.quantity)}</span>
-                `;
-                cartItemsContainer.appendChild(itemElement);
-            });
-        }
-        const total = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartTotalDisplay.textContent = formatPrice(cart.reduce((total, item) => total + (item.price * item.quantity), 0));
-        cartCount.textContent = total;
-    }
-
-    // Products data
-    const products = [
-        { id: 1, name: 'Traditional Kanjeevaram Saree', price: 5499, imageUrl: 'https://placehold.co/400x500/9b59b6/ffffff?text=Kanjeevaram+Saree', category: 'silk', description: 'A classic silk saree with intricate gold zari work.' },
-        { id: 2, name: 'Soft Cotton Handloom Saree', price: 2199, imageUrl: 'https://placehold.co/400x500/e74c3c/ffffff?text=Cotton+Saree', category: 'cotton', description: 'Lightweight and comfortable, perfect for everyday wear.' },
-        { id: 3, name: 'Georgette Floral Saree', price: 3899, imageUrl: 'https://placehold.co/400x500/3498db/ffffff?text=Georgette+Saree', category: 'georgette', description: 'A flowing saree with a beautiful floral print design.' },
-        { id: 4, name: 'Chiffon Party Wear Saree', price: 4299, imageUrl: 'https://placehold.co/400x500/2ecc71/ffffff?text=Chiffon+Saree', category: 'chiffon', description: 'Sparkling and elegant, ideal for evening events.' },
-        { id: 5, name: 'Banarasi Brocade Saree', price: 7899, imageUrl: 'https://placehold.co/400x500/f39c12/ffffff?text=Banarasi+Saree', category: 'silk', description: 'A masterpiece of weaving from Varanasi, rich and heavy.' },
-        { id: 6, name: 'Pure Linen Saree', price: 2999, imageUrl: 'https://placehold.co/400x500/1abc9c/ffffff?text=Linen+Saree', category: 'cotton', description: 'Simple yet sophisticated, known for its breathable fabric.' },
-        { id: 7, name: 'Embroidered Net Saree', price: 5999, imageUrl: 'https://placehold.co/400x500/95a5a6/ffffff?text=Net+Saree', category: 'georgette', description: 'Intricate thread work on a delicate net fabric.' },
-        { id: 8, name: 'Printed Crepe Saree', price: 3199, imageUrl: 'https://placehold.co/400x500/e67e22/ffffff?text=Crepe+Saree', category: 'chiffon', description: 'A contemporary print on a fluid crepe fabric.' },
-    ];
-    
-    // Global state for cart and authentication
-    let cart = [];
-
-    // DOM Elements
-    let productGrid, filterButtons, searchInput, cartCount, cartModal, cartItemsContainer, cartTotalDisplay, authButton, authModal, closeAuthModalBtn, googleLoginBtn, guestLoginBtn, userIdDisplay, aiChatToggleBtn, aiChatContainer, closeChatBtn, chatInput, chatSendBtn, chatMessagesContainer;
-
-    // --- Event Listeners ---
-    document.addEventListener('DOMContentLoaded', () => {
-        // Initialize DOM Elements
-        productGrid = document.getElementById('product-grid');
-        filterButtons = document.querySelectorAll('.filter-btn');
-        searchInput = document.getElementById('search-input');
-        cartCount = document.getElementById('cart-count');
-        cartModal = document.getElementById('cart-modal');
-        cartItemsContainer = document.getElementById('cart-items');
-        cartTotalDisplay = document.getElementById('cart-total');
-        authButton = document.getElementById('auth-button');
-        authModal = document.getElementById('auth-modal');
-        closeAuthModalBtn = document.getElementById('close-auth-modal');
-        googleLoginBtn = document.getElementById('google-login-btn');
-        guestLoginBtn = document.getElementById('guest-login-btn');
-        userIdDisplay = document.getElementById('user-id-display');
-        aiChatToggleBtn = document.getElementById('ai-chat-toggle');
-        aiChatContainer = document.getElementById('ai-chat-container');
-        closeChatBtn = document.getElementById('close-chat-btn');
-        chatInput = document.getElementById('chat-input');
-        chatSendBtn = document.getElementById('chat-send-btn');
-        chatMessagesContainer = document.getElementById('chat-messages');
+            </div>
+        `;
+        document.body.appendChild(llmModal);
+        document.getElementById('close-llm-modal').addEventListener('click', () => hideModal(llmModal));
         
-        // Initial rendering
-        renderProducts(products);
-        updateCartUI();
-        updateUIForAuthState();
-
-        // Product filtering
-        function applyFilters() {
-            const activeFilter = document.querySelector('.active-filter')?.dataset.filter;
-            const searchTerm = searchInput.value.toLowerCase();
-
-            const filteredProducts = products.filter(product => {
-                const matchesCategory = activeFilter === 'all' || product.category === activeFilter;
-                const matchesSearch = product.name.toLowerCase().includes(searchTerm) || product.description.toLowerCase().includes(searchTerm);
-                return matchesCategory && matchesSearch;
-            });
-            renderProducts(filteredProducts);
+        async function sendMessage() {
+            const userMessage = chatInput.value.trim();
+            if (userMessage === '') return;
+            displayMessage(userMessage, 'user');
+            chatInput.value = '';
+        
+            try {
+                const systemPrompt = "You are a helpful and friendly saree store assistant named Gaurav AI. You provide information about products, trends, and fashion advice, but cannot process payments or personal data. Your responses should be conversational, encouraging, and helpful.";
+                const userQuery = `User is asking: "${userMessage}". Based on the available product data (silk, cotton, georgette, chiffon sarees), respond to the user's query and offer to help them find a product from our categories.`;
+                const apiKey = "YOUR_GEMINI_API_KEY"; // REPLACE WITH YOUR GEMINI API KEY
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    }
+                };
+        
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (aiText) {
+                    displayMessage(aiText, 'ai');
+                } else {
+                    displayMessage("Sorry, I'm having trouble connecting right now. Please try again later.", 'ai');
+                }
+            } catch (error) {
+                console.error("AI API call failed:", error);
+                displayMessage("Sorry, I'm currently unavailable. Please check back later.", 'ai');
+            }
         }
-
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelector('.active-filter')?.classList.remove('active-filter', 'bg-gray-100');
-                button.classList.add('active-filter', 'bg-gray-100');
-                applyFilters();
-            });
-        });
-
-        searchInput.addEventListener('input', applyFilters);
-
-        // Add to cart button
-        productGrid.addEventListener('click', (event) => {
-            const button = event.target.closest('.add-to-cart-btn');
-            if (button) {
-                const productId = parseInt(button.dataset.productId);
-                const productToAdd = products.find(p => p.id === productId);
-                if (productToAdd) {
-                    addProductToCart(productToAdd);
-                }
-            }
-        });
-
-        // AI Features Button Listeners
-        productGrid.addEventListener('click', (event) => {
-            const styleBtn = event.target.closest('.style-guide-btn');
-            const storyBtn = event.target.closest('.saree-story-btn');
-            if (styleBtn) {
-                const productId = parseInt(styleBtn.dataset.productId);
-                const product = products.find(p => p.id === productId);
-                if (product) {
-                    generateContent('Style Guide', product);
-                }
-            }
-            if (storyBtn) {
-                const productId = parseInt(storyBtn.dataset.productId);
-                const product = products.find(p => p.id === productId);
-                if (product) {
-                    generateContent('Story', product);
-                }
-            }
-        });
-
-        // Modal controls
-        document.getElementById('cart-icon').addEventListener('click', () => showModal(cartModal));
-        document.getElementById('close-cart-modal').addEventListener('click', () => hideModal(cartModal));
-        document.getElementById('checkout-btn').addEventListener('click', () => {
-            placeOrder();
-            hideModal(cartModal);
-        });
-
-        // --- AUTHENTICATION BUTTONS ---
-        authButton.addEventListener('click', () => {
-            if (window.firebase.userId) {
-                window.firebase.signOut();
+        
+        async function generateContent(type, product) {
+            showModal(llmModal);
+            document.getElementById('llm-loader').classList.remove('hidden');
+            document.getElementById('llm-content').textContent = '';
+            
+            const titleMap = {
+                'Style Guide': `✨ Style Guide for Your ${product.name}`,
+                'Story': `✨ The Story of Your ${product.name}`
+            };
+            document.getElementById('llm-modal-title').textContent = titleMap[type];
+            let systemPrompt;
+            let userQuery;
+            if (type === 'Style Guide') {
+                systemPrompt = `You are a professional fashion stylist. You provide style advice for traditional Indian sarees. Your responses should be creative, helpful, and suggest matching accessories, footwear, hairstyle, and makeup. Be concise and use a friendly, encouraging tone.`;
+                userQuery = `Suggest styling ideas for a "${product.name}" which is a "${product.category}" saree with the description: "${product.description}".`;
+            } else if (type === 'Story') {
+                systemPrompt = `You are a creative writer who tells short, imaginative stories about clothing items. Your stories should evoke emotion, describe the journey of the item, or create a personal connection for the customer.`;
+                userQuery = `Write a short story about a "${product.name}" which is a "${product.category}" saree with the description: "${product.description}". Make it feel special and personal.`;
             } else {
-                showModal(authModal);
+                document.getElementById('llm-loader').classList.add('hidden');
+                document.getElementById('llm-content').textContent = 'Error: Invalid content type.';
+                return;
             }
-        });
-        closeAuthModalBtn.addEventListener('click', () => hideModal(authModal));
-
-        googleLoginBtn.addEventListener('click', async () => {
-            const provider = new GoogleAuthProvider();
-            try {
-                await signInWithPopup(auth, provider);
-                hideModal(authModal);
-                showMessage("Signed in with Google!");
-            } catch (error) {
-                console.error("Google login failed:", error);
-                showMessage("Google login failed. Please try again.");
-            }
-        });
-
-        guestLoginBtn.addEventListener('click', async () => {
-            try {
-                await signInAnonymously(auth);
-                hideModal(authModal);
-                showMessage("Signed in as Guest!");
-            } catch (error) {
-                console.error("Guest login failed:", error);
-                showMessage("Guest login failed. Please try again.");
-            }
-        });
-
-        // AI Chat Bot functionality
-        aiChatToggleBtn.addEventListener('click', () => {
-            aiChatContainer.classList.toggle('active');
-        });
-        closeChatBtn.addEventListener('click', () => {
-            aiChatContainer.classList.remove('active');
-        });
-
-        chatSendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-    });
-
-    async function sendMessage() {
-        const userMessage = chatInput.value.trim();
-        if (userMessage === '') return;
-
-        displayMessage(userMessage, 'user');
-        chatInput.value = '';
-
-        try {
-            const systemPrompt = "You are a helpful and friendly saree store assistant named Gaurav AI. You provide information about products, trends, and fashion advice, but cannot process payments or personal data. Your responses should be conversational, encouraging, and helpful.";
-            const userQuery = `User is asking: "${userMessage}". Based on the available product data (silk, cotton, georgette, chiffon sarees), respond to the user's query and offer to help them find a product from our categories.`;
-            const apiKey = "AIzaSyBF2bTQX0PXcBnaJaTsoHwv4cNYK4-rhz0"
+            const apiKey = "YOUR_GEMINI_API_KEY"; // REPLACE WITH YOUR GEMINI API KEY
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
+            try {
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    }
+                };
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                document.getElementById('llm-loader').classList.add('hidden');
+                if (aiText) {
+                    document.getElementById('llm-content').textContent = aiText;
+                } else {
+                    document.getElementById('llm-content').textContent = "Sorry, I couldn't generate the content. Please try again later.";
                 }
-            };
-
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (aiText) {
-                displayMessage(aiText, 'ai');
-            } else {
-                displayMessage("Sorry, I'm having trouble connecting right now. Please try again later.", 'ai');
+            } catch (error) {
+                console.error("AI API call failed:", error);
+                document.getElementById('llm-loader').classList.add('hidden');
+                document.getElementById('llm-content').textContent = "Sorry, I'm currently unavailable. Please check back later.";
             }
-
-        } catch (error) {
-            console.error("AI API call failed:", error);
-            displayMessage("Sorry, I'm currently unavailable. Please check back later.", 'ai');
         }
-    }
-
-    // New generic modal for LLM responses
-    const llmModal = document.createElement('div');
-    llmModal.id = 'llm-modal';
-    llmModal.className = 'modal';
-    llmModal.innerHTML = `
-        <div class="modal-content relative w-full md:w-2/3 lg:w-1/2">
-            <button id="close-llm-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition-colors">
-                <i class="fas fa-times"></i>
-            </button>
-            <h4 id="llm-modal-title" class="text-2xl font-bold text-center text-gray-800 mb-6"></h4>
-            <div id="llm-content" class="text-gray-700">
-                <!-- LLM generated content will be placed here -->
-            </div>
-            <div id="llm-loader" class="hidden text-center mt-4">
-                <i class="fas fa-spinner fa-spin text-4xl text-purple-600"></i>
-                <p class="mt-2 text-gray-500">Generating content...</p>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(llmModal);
-    document.getElementById('close-llm-modal').addEventListener('click', () => hideModal(llmModal));
-
-    async function generateContent(type, product) {
-        showModal(llmModal);
-        document.getElementById('llm-loader').classList.remove('hidden');
-        document.getElementById('llm-content').textContent = '';
         
-        const titleMap = {
-            'Style Guide': `✨ Style Guide for Your ${product.name}`,
-            'Story': `✨ The Story of Your ${product.name}`
-        };
-        document.getElementById('llm-modal-title').textContent = titleMap[type];
-
-        let systemPrompt;
-        let userQuery;
-
-        if (type === 'Style Guide') {
-            systemPrompt = `You are a professional fashion stylist. You provide style advice for traditional Indian sarees. Your responses should be creative, helpful, and suggest matching accessories, footwear, hairstyle, and makeup. Be concise and use a friendly, encouraging tone.`;
-            userQuery = `Suggest styling ideas for a "${product.name}" which is a "${product.category}" saree with the description: "${product.description}".`;
-        } else if (type === 'Story') {
-            systemPrompt = `You are a creative writer who tells short, imaginative stories about clothing items. Your stories should evoke emotion, describe the journey of the item, or create a personal connection for the customer.`;
-            userQuery = `Write a short story about a "${product.name}" which is a "${product.category}" saree with the description: "${product.description}". Make it feel special and personal.`;
-        } else {
-            document.getElementById('llm-loader').classList.add('hidden');
-            document.getElementById('llm-content').textContent = 'Error: Invalid content type.';
-            return;
+        function displayMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+            messageDiv.textContent = text;
+            chatMessagesContainer.appendChild(messageDiv);
+            chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
         }
-
-        const apiKey = "AIzaSyBF2bTQX0PXcBnaJaTsoHwv4cNYK4-rhz0"
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-        try {
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
-            };
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-            document.getElementById('llm-loader').classList.add('hidden');
-            if (aiText) {
-                document.getElementById('llm-content').textContent = aiText;
-            } else {
-                document.getElementById('llm-content').textContent = "Sorry, I couldn't generate the content. Please try again later.";
-            }
-        } catch (error) {
-            console.error("AI API call failed:", error);
-            document.getElementById('llm-loader').classList.add('hidden');
-            document.getElementById('llm-content').textContent = "Sorry, I'm currently unavailable. Please check back later.";
+        
+        function showMessage(text) {
+            const messageBox = document.createElement('div');
+            messageBox.classList.add('fixed', 'bottom-8', 'left-1/2', 'transform', '-translate-x-1/2', 'bg-gray-800', 'text-white', 'px-6', 'py-3', 'rounded-full', 'shadow-xl', 'z-50', 'transition-all', 'duration-300', 'opacity-0', 'scale-90');
+            messageBox.textContent = text;
+            document.body.appendChild(messageBox);
+        
+            setTimeout(() => {
+                messageBox.style.opacity = '1';
+                messageBox.style.transform = 'translate(-50%, -10px) scale(1)';
+            }, 100);
+        
+            setTimeout(() => {
+                messageBox.style.opacity = '0';
+                messageBox.style.transform = 'translate(-50%, 10px) scale(0.9)';
+                setTimeout(() => messageBox.remove(), 300);
+            }, 3000);
         }
-    }
-
-    function displayMessage(text, sender) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
-        messageDiv.textContent = text;
-        chatMessagesContainer.appendChild(messageDiv);
-        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight; // Auto-scroll to the bottom
-    }
-
-    // Custom alert/message box
-    function showMessage(text) {
-        const messageBox = document.createElement('div');
-        messageBox.classList.add('fixed', 'bottom-8', 'left-1/2', 'transform', '-translate-x-1/2', 'bg-gray-800', 'text-white', 'px-6', 'py-3', 'rounded-full', 'shadow-xl', 'z-50', 'transition-all', 'duration-300', 'opacity-0', 'scale-90');
-        messageBox.textContent = text;
-        document.body.appendChild(messageBox);
-
-        setTimeout(() => {
-            messageBox.style.opacity = '1';
-            messageBox.style.transform = 'translate(-50%, -10px) scale(1)';
-        }, 100);
-
-        setTimeout(() => {
-            messageBox.style.opacity = '0';
-            messageBox.style.transform = 'translate(-50%, 10px) scale(0.9)';
-            setTimeout(() => messageBox.remove(), 300);
-        }, 3000);
-    }
-
-    window.firebase.init();
-</script>
-
+    </script>
 </body>
 </html>
